@@ -1,0 +1,13 @@
+type: code
+files:
+- name: main.py
+  visible: true
+  text: "# find vocabulary by \"voc\"\n\nimport numpy as np\nfrom nltk import word_tokenize\n\
+    \ntext = str(input())\n\ndef bag_of_words(voc, text):\n    array = np.zeros((len(voc)))\
+    \ # len(voc) stands for the size of the vocabulary\n\n    # code here below\n\n\
+    \n    return array \n    # return a non-binary array\n    # it may look like this:\
+    \ [0., 2., 4., 0.]\n\nprint(bag_of_words(voc, text))"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/20263#comment
+status: Unchecked
+record: -1

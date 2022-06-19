@@ -1,0 +1,151 @@
+<h2>Intro to text representations</h2>
+<html>
+ <head></head>
+ <body>
+  <p>Texts in natural language mainly consist of alphabetical characters, words, and bigger linguistic units. The question is, how can computers operate on such data? They apply various mathematical operations to compare numbers and find patterns in numeric input. So, if we want to do the same with the linguistic data, we should convert it into a numeric format, too.</p> 
+  <p>The most convenient way is to provide a vector for each unit of a text. By <strong>vector,</strong> we mean an ordered sequence of numbers. In NLP, we can use them to describe any element, be it a single word or an entire text. What a vector encodes, depends solely on our objective and the approach we choose.</p> 
+  <p>That's what the task of text representation deals with — how to convert a text into a vector. In this topic, we are going to cover several ways to do it.</p> 
+  <h5 id="bag-of-words-model">Bag-of-words model</h5> 
+  <p>Let's start with the <strong>bag-of-words </strong>representation, which is the easiest one to implement. Here we consider each word independently, without taking into account the surrounding context. We describe a text as a sequence of all words it contains, but we do not keep their original order and place (hence the name). The resulting vector encodes the text and stores information about occurrences of words in it. The model is frequently used in document classification and information retrieval but has applications in many other NLP tasks, too.</p> 
+  <p>Let's look at the example. We have three reviews, each consisting of one sentence:</p> 
+  <p>Review1: <em>easily the best album of the year.</em></p> 
+  <p>Review2: <em>the album is amazing.</em></p> 
+  <p>Review3: <em>loved the clean production!</em></p> 
+  <p>First, we need to design the <strong>vocabulary; </strong>it is the list of all known words across the data. If we ignore punctuation marks, it can look as follows: "<em>easily</em>", "<em>the</em>", "<em>best</em>", "<em>album</em>", "<em>of</em>", "<em>year</em>", "<em>is</em>", "<em>amazing</em>", "<em>loved</em>", "<em>clean</em>", "<em>production</em>". The vector length should equal the length of vocabulary, so it will be <span class="math-tex">\(11\)</span> here.</p> 
+  <p>The next step is to count all occurrences of these words in each review. We can create a table, the columns of which will represent the units from the vocabulary:</p> 
+  <table align="center" border="1" cellpadding="1" cellspacing="1" style="width: 800px;"> 
+   <tbody> 
+    <tr> 
+     <td style="text-align: center;"> </td> 
+     <td style="text-align: center;"><em><strong>easily</strong></em></td> 
+     <td style="text-align: center;"><em><strong>the</strong></em></td> 
+     <td style="text-align: center;"><em><strong>best</strong></em></td> 
+     <td style="text-align: center;"><em><strong>album</strong></em></td> 
+     <td style="text-align: center;"><em><strong>of</strong></em></td> 
+     <td style="text-align: center;"><em><strong>year</strong></em></td> 
+     <td style="text-align: center;"><em><strong>is</strong></em></td> 
+     <td style="text-align: center;"><em><strong>amazing</strong></em></td> 
+     <td style="text-align: center;"><em><strong>loved</strong></em></td> 
+     <td style="text-align: center;"><em><strong>clean</strong></em></td> 
+     <td style="text-align: center;"><em><strong>production</strong></em></td> 
+    </tr> 
+    <tr> 
+     <td style="text-align: center;"><strong>Review1</strong></td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">2</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+    </tr> 
+    <tr> 
+     <td style="text-align: center;"><strong>Review2</strong></td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+    </tr> 
+    <tr> 
+     <td style="text-align: center;"><strong>Review3</strong></td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">0</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">1</td> 
+     <td style="text-align: center;">1</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <p>For one, the article "<em>the</em>" appears twice in the first review, so we insert <span class="math-tex">\(2\)</span> in the corresponding cell opposite the document name. We obtain the following representations, in which a number in the vector represents the count of the corresponding word:</p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review1}=[1,2,1,1,1,1,0,0,0,0,0]\)</span></p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review 2} = [0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0]\)</span></p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review 3} = [0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]\)</span></p> 
+  <h5 id="other-scoring-methods">Other scoring methods</h5> 
+  <p>There can be different ways of scoring. You can simply point out whether a word appears in a document or not. That leads to binary vectors, with <span class="math-tex">\(0\)</span> for each absent word and <span class="math-tex">\(1\)</span> for each present word. Now our representation will change a little:</p> 
+  <p style="text-align: center;"> <span class="math-tex">\(v_{Review1} = [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0]\)</span></p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review 2} = [0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0]\)</span></p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review 3} = [0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]\)</span></p> 
+  <p>We create binary vectors when we are more concerned about the presence of words rather than their raw counts. The simplest sentiment analysis is an example of a task in which we can apply this representation.</p> 
+  <p>Another approach is to calculate frequencies. You need to score occurrences of a particular word divided by the total number of words in a document. Let's illustrate it with "<em>the</em>": it appears twice in the first review which comprises <span class="math-tex">\(7\)</span> words overall. Hence, the result of their division is <span class="math-tex">\(\frac{2}{7}\)</span>. If we convert the number to a decimal fraction and round it up to two decimal places, we get <span class="math-tex">\(0.29\)</span>. So, for all the reviews, we get these vectors:</p> 
+  <p style="text-align: center;"> <span class="math-tex">\(v_{Review1} = [0.14, 0.29, 0.14, 0.14, 0.14, 0.14, 0.00, 0.00, 0.00, 0.00, 0.00]\)</span></p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review 2} = [0.00, 0.25, 0.00, 0.25, 0.00, 0.00, 0.25, 0.25, 0.00, 0.00, 0.00]\)</span></p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review 3} = [0.00, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.25, 0.25, 0.25]\)</span></p> 
+  <p>Counting frequencies makes sense when we have several documents. It is a way to compare the ratio of a specific word across the data, for instance, if one document consists of <span class="math-tex">\(25\)</span> words and the other one of <span class="math-tex">\(100\)</span> words. However, if you have only one text, raw counts will be enough to determine the most common terms.</p> 
+  <h5 id="advantages-and-disadvantages-of-bag-of-words">Advantages and disadvantages of bag-of-words</h5> 
+  <p>Now, we can name some advantages of the model:</p> 
+  <ul> 
+   <li>The main benefit lies in its simplicity. All values in a vector are easy to compute, and we can always tell what they stand for. In addition, despite the simplicity, it usually shows good performance in classification tasks.</li> 
+   <li>We can encode an entire text right away. If we do not need to pay attention to any of the inner structure, this approach is a good choice.</li> 
+   <li>We do not need a large dataset to build a model (as opposed to word embeddings you will learn about below).</li> 
+  </ul> 
+  <p>However, there are some weaknesses, too:</p> 
+  <ul> 
+   <li>The model pays no attention to inner relations and neglects the word context, so the semantics is left out. Consider <em>buy</em> and <em>purchase;</em> in most cases, these words are synonyms and used in the same context, but we cannot access this information here.</li> 
+   <li>Often it provides sparse vectors with a huge amount of <strong>dimensions</strong>, that is vector length; in the bag-of-words it also equals the vocabulary length. Such vectors are both computation and memory consuming.</li> 
+  </ul> 
+  <p>There is nothing we can do about the first disadvantage. As for the second one, standard preprocessing steps, such as text normalization and stopword removal, may help us. After the first procedure, various forms of one word ("<em>goes</em>", "<em>going</em>") will become a base form ("<em>go</em>"). This also applies to cases of "<em>Go</em>" and "<em>go</em>": if we do not convert "<em>Go</em>"<em> </em>to lowercase, these words will be recognized as two different units in the dictionary. After the second procedure, some high-frequency but meaningless words ("<em>a</em>",<em> "the</em>", "<em>are</em>", prepositions, etc.) will be removed completely. As a result, the vocabulary will include less items, and the vector will be shorter.</p> 
+  <p>However, these steps are inefficient with large texts and dictionaries of thousands or millions of words. A bit later in this topic, we will observe another type of representation, which allows us to solve this problem.</p> 
+  <h5 id="tf-idf">TF-IDF</h5> 
+  <p>Sometimes, when we score occurrences in the bag-of-words model, we get frequent words that are not important to a document we consider. Yet there can be words with smaller scores that are relevant to the topic of our text, but the bag-of-words does not pay enough attention to them. Here we have <strong>TF-IDF </strong>to help us increase proportionality and emphasize those words that actually contain useful information.</p> 
+  <p><strong>TF-IDF</strong> is short for<em> term frequency-inverse document frequency</em>. Here we mark counts not only in a specific document but also in an entire text collection. Some words appear in each document (for example, the verbs "<em>do</em>", "<em>say</em>", "<em>have</em>"), and their scores can be high even for one text. The idea of TF-IDF is to rescale the counts to get rid of such bias. That results in a weighted bag-of-words representation.</p> 
+  <p>To get TF-IDF, you need to calculate two metrics:</p> 
+  <ul> 
+   <li><strong>Term frequency </strong>captures the frequency of a word in one chosen document; it is the last method we showed in the previous section. Given some term <span class="math-tex">\(w\)</span> and a document <span class="math-tex">\(d\)</span>, we can calculate it as follows:</li> 
+  </ul> 
+  <p style="text-align: center;"><span class="math-tex">\(tf(w,d)=\frac{number\;of\;times\;w\;appears\;in\;d}{the\;total\;number\;of\;words\;in\;d}\)</span></p> 
+  <ul> 
+   <li><strong>Inverse document frequency </strong>measures the rarity of a word across an entire set of documents. The more common a word, the closer its weight to <span class="math-tex">\(0\)</span>. Given a document set <span class="math-tex">\(D\)</span>, the formula looks like this:</li> 
+  </ul> 
+  <p style="text-align: center;"><span class="math-tex">\(idf(w,D)=log\frac{the\;total\;number\;of\;documents\;in\;D}{the\;number\;of\;documents\;in\;D\;that\;include\;w}\)</span></p> 
+  <p>The base of the logarithm can be different, but most commonly the natural logarithm is used. The TF-IDF score is the product of these two metrics:</p> 
+  <p style="text-align: center;"><span class="math-tex">\(tf\;idf(w)=tf(w,d)\times{idf(w,D)}\)</span></p> 
+  <p>According to this representation, if a word is frequent in one document and not in others, it is valuable for this specific text. If the word occurs in most documents, it is regarded as meaningless and gets a very low weight due to IDF. In the end, we also get a vector representation, but this time the score for each word is calculated by means of TF-IDF.</p> 
+  <h5 id="example-of-calculating-tf-idf">Example of calculating TF-IDF</h5> 
+  <p>Now, let's count the score for the article "<em>the</em>" from the first review that we introduced in the bag-of-words section:</p> 
+  <p style="text-align: center;"><span class="math-tex">\(tf=\frac{2}{7}\approx0.29\)</span></p> 
+  <p>The total number of documents is <span class="math-tex">\(3\)</span>, so is the number of reviews that include this term. Here we take the natural logarithm:</p> 
+  <p style="text-align: center;"><span class="math-tex">\(idf = ln\:\frac{3}{3}=ln\:1=0\)</span></p> 
+  <p>The result is <span class="math-tex">\(0\)</span>, so the term is meaningless for the review, just as any other word that appears across the entire data:</p> 
+  <p style="text-align: center;"><span class="math-tex">\(tf\;idf = 0.29\times0=0\)</span></p> 
+  <p>Let's provide vectors for all sentences:</p> 
+  <p style="text-align: center;"> <span class="math-tex">\(v_{Review1} = [0.15, 0.00, 0.15, 0.06, 0.15, 0.15, 0.00, 0.00, 0.00, 0.00, 0.00]\)</span></p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review 2} = [0.00, 0.00, 0.00, 0.10, 0.00, 0.00, 0.27, 0.27, 0.00, 0.00, 0.00]\)</span></p> 
+  <p style="text-align: center;"><span class="math-tex">\(v_{Review 3} = [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.27, 0.27, 0.27]\)</span></p> 
+  <p>TF-IDF is an easy approach that can be intuitively understood. With its help, we can highlight the most valuable terms in a text. However, as it is based on the bag-of-words, we still ignore the grammar, semantics, and other linguistic aspects. The resulting vectors are high-dimensional and sparse, too. So, let's finally move on to a representation that can deal with these drawbacks.</p> 
+  <h5 id="word-embeddings">Word embeddings</h5> 
+  <p>Usually, we want our representation to keep the most of linguistic information from the data, such as semantic properties or word order.</p> 
+  <p>For this purpose, we have a set of techniques known as <strong>word embeddings</strong>. Embeddings that they provide are also vectors, but they represent a word rather than the whole text, and the way its weights are calculated is not as obvious as in the previous approaches. Here we have lower-dimensional and denser vectors compared to the ones before, that means that they are shorter and have less zero values in them. In this case, they are easier to process.</p> 
+  <p>Word embeddings allow us to capture semantic and syntactic relations. For example, the words "<em>lamp</em>" and "<em>lantern</em>" will have very similar vectors, while "<em>lantern</em>" and "<em>can</em>" will have different representations.</p> 
+  <p>We cannot simply score the values manually, as we have done it with the bag-of-words and TF-IDF. Instead, the weights should be obtained during training on very large text collections. Alternatively, we can use pre-trained embeddings, for one, provided by the <a target="_blank" href="https://nlp.stanford.edu/projects/glove/" rel="noopener noreferrer nofollow">GloVe</a> and <a target="_blank" href="https://fasttext.cc/docs/en/english-vectors.html" rel="noopener noreferrer nofollow">fastText</a> projects. The vector length can be set as a model parameter. Nowadays, there are two main types of word embeddings:</p> 
+  <ul> 
+   <li><strong>Context-independent</strong>, where a model provides a single embedding, analyzing all usages of a word and generalizing them as one "meaning" in a vector. Besides GloVe that uses co-occurrence statistics, the well-known example is predictive <a target="_blank" href="https://code.google.com/archive/p/word2vec/" rel="noopener noreferrer nofollow">word2vec</a>.</li> 
+   <li><strong>Contextual</strong>, where a model provides different word embeddings (different "meanings") based on the context of a word. <a target="_blank" href="https://allennlp.org/elmo" rel="noopener noreferrer nofollow">ELMo</a> and <a target="_blank" href="https://github.com/google-research/bert" rel="noopener noreferrer nofollow">BERT</a> are the most common examples.</li> 
+  </ul> 
+  <p>As we noted, embeddings are usually given for a single word. In case you need to get one vector for a text, you can take the average, the sum, or the product of all word vectors in it. This is applied in NLP tasks, but you should keep in mind that once again you will miss the word order. Sometimes it will affect the semantics, too. Another approach is to weigh vectors with the TF-IDF scores first. As not all words represent the text meaning equally, we can decrease their importance. If we multiply each element in a vector by the corresponding TF-IDF value of a word, topic-relevant terms will have more weight, when determining the sense of the sentence.</p> 
+  <p>In the next topics, you will learn more about some embedding models.</p> 
+  <h5 id="conclusion">Conclusion</h5> 
+  <p>In this topic, we overviewed some standard techniques for text representation. Summing up,</p> 
+  <ul> 
+   <li>Under the <strong>bag-of-words</strong>, we can use several metrics to describe the word occurrence, but the resulting vectors are usually high-dimensional, sparse, and can't keep additional linguistic information;</li> 
+   <li><strong>TF-IDF</strong> is an advanced variant of the bag-of-words that measures the relevance of a word for a document. It has the same issues as the previous approach;</li> 
+   <li><strong>Embedding </strong>models allow us to capture semantic relations between words and create low-dimensional dense vectors. Here words with resembling meanings tend to have similar vector representations.</li> 
+  </ul>
+ </body>
+</html>
