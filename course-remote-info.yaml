@@ -16,7 +16,7 @@ stages:
   is_completed: true
 - id: 863
   step: 12372
-  is_completed: false
+  is_completed: true
 topics:
   0:
   - title: Overview of NLTK
